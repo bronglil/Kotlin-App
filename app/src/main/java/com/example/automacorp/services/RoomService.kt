@@ -1,8 +1,8 @@
-package com.example.automacorp.Services
+package com.example.automacorp.services
 
 import WindowDto
 import androidx.core.text.isDigitsOnly
-import com.example.automacorp.Models.RoomDto
+import com.example.automacorp.models.RoomDto
 
 object RoomService {
     val ROOM_KIND: List<String> = listOf("Room", "Meeting", "Laboratory", "Office", "Boardroom")
@@ -13,7 +13,6 @@ object RoomService {
         return WindowDto(
             id = id,
             name = "${ WINDOW_KIND.random()} Window $id",
-            roomName = roomName,
             roomId = roomId,
             windowStatus = WindowStatus.values().random()
         )
@@ -55,6 +54,7 @@ object RoomService {
         ) ?: throw IllegalArgumentException()
         return ROOMS.set(index, updatedRoom)
     }
+
 
 
 
