@@ -2,8 +2,10 @@ package com.example.automacorp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +24,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,27 +36,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.automacorp.services.RoomViewModel
 import com.example.automacorp.ui.theme.AutomacorpTheme
-
+import androidx.compose.runtime.collectAsState
 
 class MainActivity : ComponentActivity() {
+    private val roomViewModel: RoomViewModel by viewModels()
 
     companion object {
         const val ROOM_PARAM = "com.automacorp.room.attribute"
     }
 
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         val onSayHelloButtonClick: (name: String) -> Unit = { name ->
-            val intent = Intent(this, RoomActivity::class.java).apply {
-                putExtra(ROOM_PARAM, name)
+            val validRoomPattern = Regex("^r.*", RegexOption.IGNORE_CASE)
+            val intent = if (validRoomPattern.matches(name)) {
+                Intent(this, RoomActivity::class.java).apply {
+                    putExtra(ROOM_PARAM, name)
+                }
+            } else {
+                Intent(this, NotFoundActivity::class.java)
             }
             startActivity(intent)
         }
+
 
         setContent {
             AutomacorpTheme {
@@ -67,6 +78,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun AppLogo(modifier: Modifier) {
     Image(
@@ -79,6 +91,7 @@ fun AppLogo(modifier: Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Greeting(onClick: (name: String) -> Unit, modifier: Modifier = Modifier) {
+
     Column {
         AppLogo(Modifier.padding(top = 32.dp).fillMaxWidth())
         Text(

@@ -1,7 +1,7 @@
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,17 +20,23 @@ import com.example.automacorp.R
 import com.example.automacorp.ui.theme.AutomacorpTheme
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.platform.LocalContext
+import com.example.automacorp.RoomActivity
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun AutomacorpTopAppBar(title: String? = null, returnAction: () -> Unit = {}) {
     val context = LocalContext.current
+
     val colors = TopAppBarDefaults.mediumTopAppBarColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         titleContentColor = MaterialTheme.colorScheme.primary,
     )
     val actions: @Composable RowScope.() -> Unit = {
-        IconButton(onClick = { /* do something */ }) {
+        IconButton(onClick = {
+            val intent = Intent(context, RoomActivity::class.java)
+            context.startActivity(intent)
+            (context as? Activity)?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }) {
             Icon(
                 painter = painterResource(R.drawable.ic_action_rooms),
                 contentDescription = stringResource(R.string.app_go_room_description)
