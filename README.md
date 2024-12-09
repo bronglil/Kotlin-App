@@ -8,6 +8,12 @@ The Automacorp Room Management App is designed to manage rooms and their details
 
 To get started with the application, follow the instructions below:
 
+Type Room it will take you to Rooms list
+
+Click on Room List it will take you to details page
+
+Update ot click back it will invalidate the API call after Update
+
 ### Prerequisites
 
 - Android Studio
